@@ -11,6 +11,10 @@ def _cart_id(request):
     return cart
 
 def add_cart(request, product_id):
+    color = request.GET['color']
+    size = request.GET['size']
+    
+    
     product = Product.objects.get(id=product_id)
     try:
         cart = Cart.objects.get(cart_id = _cart_id(request))
@@ -56,6 +60,8 @@ def remove_cart_item(request, product_id):
     
 def cart(request, total=0, quantity=0, cart_items=None):
     try:
+        tax = 0
+        grand_total = 0
         cart = Cart.objects.get(cart_id = _cart_id(request))
         cart_items = CartItem.objects.filter(cart=cart, is_active=True)
         for cart_item in cart_items:
